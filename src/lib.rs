@@ -12,7 +12,7 @@ pub fn impl_component(stream: TokenStream) -> TokenStream {
     quote!(
         
         impl #struct_name {
-            fn free_object(#struct_name) {
+            fn free_object(self) {
                 let o = Gd::from_object(self);
                 o.free();
             }
