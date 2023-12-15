@@ -10,6 +10,22 @@ pub fn impl_component(stream: TokenStream) -> TokenStream {
     let struct_name = &ast.ident;
 
     quote!(
-        impl Component for #struct_name {}
+        
+        impl #struct_name {
+            fn free_object(#struct_name) {
+                let o = Gd::from_object(self);
+                o.free();
+            }
+            
+            fn construct() -> Gd<#struct_name> {
+                let o = #struct_name::alloc_gd();
+                o.connect("tree_exited".into(), Callable::from_ogbject_method(&struct_name, "free_object"));
+                o
+            }
+        }
+        
+        impl Component for #struct_name {
+            
+        }
     ).into()
 }
