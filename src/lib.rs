@@ -19,7 +19,8 @@ pub fn impl_component(stream: TokenStream) -> TokenStream {
             
             fn construct() -> Gd<#struct_name> {
                 let mut o = #struct_name::alloc_gd();
-                //o.connect("tree_exited".into(), Callable::from_object_method(&o.clone(), "free_object"));
+                let s = Callable::from_object_method(&o, "free_object");
+                o.connect("tree_exited".into(), s);
                 o
             }
         }
